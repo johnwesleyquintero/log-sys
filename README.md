@@ -117,9 +117,13 @@ $$\text{Landed Cost Impact} = \text{FOB Product Unit Cost} + \text{Cost / Unit}$
    - Categorizes root causes (port demurrage, chassis split fees, clean truck charges) to build empirical negotiation evidence.
 4. **Rate Card Management with Expiration Governance:**
    - Contracted lane rate cards with active/expired visual alerts. Expired rates cannot silently be used for new quotes.
-5. **Google Sheets Sync & Apps Script Generator:**
-   - Built-in `Code.gs` viewer ready to paste into Google Apps Script in under 60 seconds.
-   - Full JSON bundle and CSV export/import for spreadsheets.
+5. **Google Sheets Operational DB & Apps Script (`Code.gs`):**
+   - Pre-configured `Code.gs` in root directory and exportable directly from the UI.
+   - **`setupSheet(sheetName)`**: Sets up and formats any single operational sheet (e.g. `setupSheet('Shipments')` or `setupSheet('Quotes')`) with dark headers, frozen rows, and auto-resized column widths.
+   - **`setupSheets()`**: Automatically creates and formats all 8 operational tables simultaneously.
+   - **`setupActiveSheet()`**: Formats whatever sheet tab is currently selected in Google Sheets.
+   - Custom **`⚡ Hungry Artisan Logistics`** Google Sheets menu with one-click setup and data seeding.
+   - Full bidirectional JSON bundle and CSV export/import for spreadsheets.
 6. **Wesley's 10 Success Criteria Live Audit:**
    - Direct audit slide-over answering all 10 operational questions in real time.
 

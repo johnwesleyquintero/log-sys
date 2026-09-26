@@ -1,6 +1,4 @@
-import { Forwarder, Shipment, Quote, HistoricalShipment, RateCard } from '../types';
-
-export const APPS_SCRIPT_SAMPLE_CODE = `/**
+/**
  * Google Apps Script - Hungry Artisan Freight Quoting & Cost Service
  * Service Layer between Google Sheets (Operational DB) and React Decision Interface
  * Owner: Wesley Quintero (Hungry Artisan)
@@ -102,7 +100,7 @@ function setupSheet(sheetName) {
   const table = OPERATIONAL_TABLES[sheetName];
   if (!table) {
     const validNames = Object.keys(OPERATIONAL_TABLES).join(', ');
-    throw new Error(\`Unknown sheet name "\${sheetName}". Valid operational sheets: \${validNames}\`);
+    throw new Error(`Unknown sheet name "${sheetName}". Valid operational sheets: ${validNames}`);
   }
 
   return setupSingleSheet_(ss, sheetName, table.headers);
@@ -120,7 +118,7 @@ function setupActiveSheet() {
     const ui = SpreadsheetApp.getUi();
     ui.alert(
       'Unknown Sheet Name',
-      \`Current sheet "\${name}" is not a recognized operational table.\\n\\nValid tables are: \${Object.keys(OPERATIONAL_TABLES).join(', ')}\\n\\nRun "Setup All Operational Sheets & Tables" to generate them.\`,
+      `Current sheet "${name}" is not a recognized operational table.\n\nValid tables are: ${Object.keys(OPERATIONAL_TABLES).join(', ')}\n\nRun "Setup All Operational Sheets & Tables" to generate them.`,
       ui.ButtonSet.OK
     );
     return;
@@ -128,7 +126,7 @@ function setupActiveSheet() {
 
   setupSingleSheet_(ss, name, OPERATIONAL_TABLES[name].headers);
   const ui = SpreadsheetApp.getUi();
-  ui.alert('Sheet Configured', \`Sheet "\${name}" has been formatted with operational schema.\`, ui.ButtonSet.OK);
+  ui.alert('Sheet Configured', `Sheet "${name}" has been formatted with operational schema.`, ui.ButtonSet.OK);
 }
 
 /**
@@ -162,8 +160,8 @@ function setupSingleSheet_(ss, name, headers) {
     sheet.autoResizeColumn(c);
   }
 
-  Logger.log(\`Sheet "\${name}" configured with \${headers.length} columns.\`);
-  return \`SUCCESS: Sheet "\${name}" configured.\`;
+  Logger.log(`Sheet "${name}" configured with ${headers.length} columns.`);
+  return `SUCCESS: Sheet "${name}" configured.`;
 }
 
 /**
@@ -255,7 +253,7 @@ function doPost(e) {
         setupSheet(payload.sheet_name);
         return ContentService.createTextOutput(JSON.stringify({
           success: true,
-          message: 'Operational sheet "' + payload.sheet_name + '" created and formatted successfully.'
+          message: `Operational sheet "${payload.sheet_name}" created and formatted successfully.`
         })).setMimeType(ContentService.MimeType.JSON);
       } else {
         setupSheets();
@@ -320,96 +318,4 @@ function updateShipmentStatus(ss, shipmentId, status, forwarderId) {
       break;
     }
   }
-}
-`;
-
-export interface GoogleSheetsExportBundle {
-  exported_at: string;
-  forwarders: Forwarder[];
-  shipments: Shipment[];
-  quotes: Quote[];
-  historical_shipments: HistoricalShipment[];
-  rate_cards: RateCard[];
-  assumptions: {
-    fx_rate_usd_to_cny: number;
-    default_ocean_free_time_days: number;
-    standard_pallet_dimensions_cm: string;
-  };
-}
-
-export function generateExportBundle(
-  forwarders: Forwarder[],
-  shipments: Shipment[],
-  quotes: Quote[],
-  historical_shipments: HistoricalShipment[],
-  rate_cards: RateCard[],
-): GoogleSheetsExportBundle {
-  return {
-    exported_at: new Date().toISOString(),
-    forwarders,
-    shipments,
-    quotes,
-    historical_shipments,
-    rate_cards,
-    assumptions: {
-      fx_rate_usd_to_cny: 7.18,
-      default_ocean_free_time_days: 14,
-      standard_pallet_dimensions_cm: '120x100x160',
-    },
-  };
-}
-
-export function downloadJsonFile(filename: string, data: unknown): void {
-  const jsonStr = JSON.stringify(data, null, 2);
-  const blob = new Blob([jsonStr], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-export function convertToCSV(items: Record<string, unknown>[]): string {
-  if (items.length === 0) return '';
-  const headers = Object.keys(items[0]);
-  const csvRows = [headers.join(',')];
-
-  for (const row of items) {
-    const values = headers.map((header) => {
-      const val = row[header];
-      if (val === null || val === undefined) return '""';
-      const escaped = String(val).replace(/"/g, '""');
-      return `"${escaped}"`;
-    });
-    csvRows.push(values.join(','));
-  }
-
-  return csvRows.join('\n');
-}
-
-export function downloadCSV(filename: string, csvContent: string): void {
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-export function downloadCodeGs(): void {
-  const blob = new Blob([APPS_SCRIPT_SAMPLE_CODE], { type: 'text/javascript;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'Code.gs';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
 }
