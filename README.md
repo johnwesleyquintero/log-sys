@@ -42,7 +42,7 @@ Hungry Artisan operates across three primary regional fulfillment nodes:
 | Name | Role / Organization | Contact Details | Key Responsibilities |
 | :--- | :--- | :--- | :--- |
 | **Justin Hopkins** | Founder & CEO, *Hungry Artisan* | `justin@hungryartisan.com` | Inbound shipments from China, executive oversight, manual transfer approvals, freight budgeting. |
-| **Wesley Quintero** | Logistics Operations & Freight Manager, *Hungry Artisan* | `wesley.ecomva@gmail.com` | AWD multi-channel transfers (WFS/FBT), Canada & UK 3PL replenishment execution, weekly reporting, sales & stockout monitoring, quote normalization, and carrier SLA routing recommendations. |
+| **Wesley Quintero** | Logistics Operations & Freight Manager, *Hungry Artisan* | `wesley@hungryartisan.com` | AWD multi-channel transfers (WFS/FBT), Canada & UK 3PL replenishment execution, weekly reporting, sales & stockout monitoring, quote normalization, and carrier SLA routing recommendations. |
 | **Bert Abedirad** | Director / VP, *Proline Logistics Services (Canada)* | `info@prolinelogistics.ca`<br>`(604) 500-2055` | Canada 3PL warehousing, carton/pallet labeling, LTL freight dispatch to Amazon YHM1. |
 | **Matt Terry** | Warehouse Manager, *SSD Logistix (UK)* | `office@ssdlogistix.com`<br>`01789 777 905` | UK 3PL warehouse management, customs receipt, and UK FBA shipment processing. |
 | **Jules** | WebBee / Integration Specialist | *Internal Slack* | Multi-channel integration support (Map My Channel / WebBee). |

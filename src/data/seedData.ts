@@ -72,7 +72,7 @@ export const OPERATIONS_CONTACTS: OperationsContact[] = [
     name: 'Wesley Quintero',
     role: 'Logistics Operations & Freight Manager',
     organization: 'Hungry Artisan',
-    email: 'wesley.ecomva@gmail.com',
+    email: 'wesley@hungryartisan.com',
     location: 'Operations Hub',
     responsibilities: [
       'AWD multi-channel transfers execution (Walmart WFS, TikTok FBT, Amazon FBA)',
