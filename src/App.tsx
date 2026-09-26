@@ -29,12 +29,12 @@ import { GoogleSheetsSyncModal } from './components/GoogleSheetsSyncModal';
 import { SuccessCriteriaChecklist } from './components/SuccessCriteriaChecklist';
 
 const STORAGE_KEYS = {
-  FORWARDERS: 'ha_freight_forwarders_v3',
-  SHIPMENTS: 'ha_freight_shipments_v3',
-  QUOTES: 'ha_freight_quotes_v3',
-  HISTORY: 'ha_freight_history_v3',
-  RATE_CARDS: 'ha_freight_rate_cards_v3',
-  SYNC_STATE: 'ha_freight_sync_state_v3',
+  FORWARDERS: 'ha_freight_forwarders_v4',
+  SHIPMENTS: 'ha_freight_shipments_v4',
+  QUOTES: 'ha_freight_quotes_v4',
+  HISTORY: 'ha_freight_history_v4',
+  RATE_CARDS: 'ha_freight_rate_cards_v4',
+  SYNC_STATE: 'ha_freight_sync_state_v4',
 };
 
 export default function App() {
@@ -217,6 +217,23 @@ export default function App() {
     if (bundle.rate_cards) setRateCards(bundle.rate_cards);
   };
 
+  const handleResetToBaseline = () => {
+    setForwarders(INITIAL_FORWARDERS);
+    setShipments(INITIAL_SHIPMENTS);
+    setQuotes(INITIAL_QUOTES);
+    setHistoricalShipments(INITIAL_HISTORICAL_SHIPMENTS);
+    setRateCards(INITIAL_RATE_CARDS);
+    if (INITIAL_SHIPMENTS.length > 0) {
+      setActiveShipmentId(INITIAL_SHIPMENTS[0].shipment_id);
+    }
+    setSyncState((prev) => ({
+      ...prev,
+      last_synced_at: new Date().toISOString(),
+      status: 'connected',
+      last_payload_summary: `Enriched baseline dataset restored (${INITIAL_SHIPMENTS.length} shipments, ${INITIAL_QUOTES.length} quotes).`,
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-[#0b0f19] text-neutral-100 flex flex-col font-sans">
       {/* 3-Zone Top Bar Navigation */}
@@ -389,6 +406,7 @@ export default function App() {
           historicalShipments={historicalShipments}
           rateCards={rateCards}
           onImportData={handleImportData}
+          onResetToBaseline={handleResetToBaseline}
         />
       )}
 

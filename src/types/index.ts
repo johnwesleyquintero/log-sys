@@ -29,7 +29,16 @@ export type ServiceType =
   | 'Amazon Global Logistics (AGL)'
   | 'Air Freight Standard'
   | 'Air Freight Express'
-  | 'Expedited Ocean (Matson/ZIM)';
+  | 'Expedited Ocean (Matson/ZIM)'
+  | 'Ocean LCL Premium'
+  | 'Ocean LCL Standard'
+  | 'Integrated Ocean + 3PL'
+  | 'Ocean LCL Port-to-CFS'
+  | 'Direct UK Ocean LCL + 3PL Prep'
+  | 'Ocean LCL via Felixstowe'
+  | 'Ocean IPI Intermodal Rail'
+  | 'Digital Ocean Freight LCL'
+  | 'Expedited Ocean LCL';
 
 export interface Forwarder {
   forwarder_id: string;

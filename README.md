@@ -121,7 +121,10 @@ $$\text{Landed Cost Impact} = \text{FOB Product Unit Cost} + \text{Cost / Unit}$
    - **`setupSheet(sheetName)`**: Sets up and formats any single operational sheet (e.g. `setupSheet('Shipments')` or `setupSheet('Quotes')`) with dark headers, frozen rows, and auto-resized column widths.
    - **`setupSheets()`**: Automatically creates and formats all 8 operational tables simultaneously.
    - **`setupActiveSheet()`**: Formats whatever sheet tab is currently selected in Google Sheets.
-   - Custom **`⚡ Hungry Artisan Logistics`** Google Sheets menu with one-click setup and data seeding.
+   - **`seedDefaultData()`**: Writes the complete baseline dataset into all 8 operational sheets directly inside Google Sheets.
+   - **Live Seed Logging via UI**: Click **"Push Seed Data to Sheet"** in the Google Sheets Sync Modal to write and log all shipments, quotes, forwarders, and rate cards to your connected spreadsheet with real-time audit logging in `AuditLog`.
+   - Custom **`⚡ Hungry Artisan Logistics`** Google Sheets menu with one-click setup and baseline seeding.
+   - Direct individual CSV downloads for each operational table (Shipments, Quotes, Quote Components, Forwarders, Historical Costs, Rate Cards).
    - Full bidirectional JSON bundle and CSV export/import for spreadsheets.
 6. **Wesley's 10 Success Criteria Live Audit:**
    - Direct audit slide-over answering all 10 operational questions in real time.
