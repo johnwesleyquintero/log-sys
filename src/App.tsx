@@ -29,12 +29,12 @@ import { GoogleSheetsSyncModal } from './components/GoogleSheetsSyncModal';
 import { SuccessCriteriaChecklist } from './components/SuccessCriteriaChecklist';
 
 const STORAGE_KEYS = {
-  FORWARDERS: 'ha_freight_forwarders_v2',
-  SHIPMENTS: 'ha_freight_shipments_v2',
-  QUOTES: 'ha_freight_quotes_v2',
-  HISTORY: 'ha_freight_history_v2',
-  RATE_CARDS: 'ha_freight_rate_cards_v2',
-  SYNC_STATE: 'ha_freight_sync_state_v2',
+  FORWARDERS: 'ha_freight_forwarders_v3',
+  SHIPMENTS: 'ha_freight_shipments_v3',
+  QUOTES: 'ha_freight_quotes_v3',
+  HISTORY: 'ha_freight_history_v3',
+  RATE_CARDS: 'ha_freight_rate_cards_v3',
+  SYNC_STATE: 'ha_freight_sync_state_v3',
 };
 
 export default function App() {

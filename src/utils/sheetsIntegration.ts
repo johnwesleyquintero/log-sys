@@ -205,7 +205,7 @@ function seedDefaultData() {
   // Forwarders
   const fwdSheet = ss.getSheetByName('Forwarders');
   if (fwdSheet && fwdSheet.getLastRow() <= 1) {
-    fwdSheet.appendRow(['FWD-AGL', 'Amazon Global Logistics (AGL)', 'AGL Seller Support', 'agl-support@amazon.com', '+1 888 280 4331', 'China to US AWD Direct, FBA', true, 'Deducted from Seller Central', 96, 'Direct injection into AWD.']);
+    fwdSheet.appendRow(['FWD-AGL', 'Amazon Global Logistics (AGL)', 'AGL Seller Support / Account Team', '', '', 'China to US AWD, China to US FBA', true, 'Amazon / Seller Central billing', 96, 'Amazon-operated end-to-end logistics option for eligible routes.']);
     fwdSheet.appendRow(['FWD-01', 'Apex Global Logistics', 'David Chen', 'dchen@apexgl-freight.com', '+86 755 8829 4410', 'Shenzhen, Ningbo, US West Coast', true, 'Net 30 days', 94, 'Primary LCL forwarder for South China.']);
     fwdSheet.appendRow(['FWD-PROLINE', 'Proline Freight Connect (Canada)', 'Bert Abedirad', 'info@prolinelogistics.ca', '(604) 500-2055', 'China to Vancouver 3PL, YHM1', true, 'Net 15 days', 95, 'Canada 3PL hub in Delta, BC.']);
     fwdSheet.appendRow(['FWD-SSD', 'SSD Maritime & Logistics (UK)', 'Matt Terry', 'office@ssdlogistix.com', '01789 777 905', 'China to Southampton, UK FBA', true, 'Net 30 days', 97, 'UK 3PL hub in Stratford-upon-Avon.']);
