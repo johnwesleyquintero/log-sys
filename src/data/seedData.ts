@@ -6,6 +6,7 @@ import {
   RateCard,
   OperationsContact,
   SupplyChainRegion,
+  DataSource,
 } from '../types';
 
 export interface RegionalFramework {
@@ -15,13 +16,14 @@ export interface RegionalFramework {
   primary_storage_hub: string;
   fulfillment_channels: string[];
   operational_workflow: string;
+  data_source?: DataSource;
 }
 
 /**
  * HA GLOBAL SUPPLY CHAIN FRAMEWORK
  *
  * Source:
- * - Hungry Artisan-provided operational framework
+ * - Hungry Artisan-provided operational framework (HA data)
  * - HA-provided contacts and logistics relationships
  * - Executive Leadership: Justin Hopkins (CEO) & Wesley Quintero (Logistics Operations & Freight Manager)
  */
@@ -41,6 +43,7 @@ export const GLOBAL_SUPPLY_CHAIN_FRAMEWORK: RegionalFramework[] = [
     ],
     operational_workflow:
       'Bulk containerized inventory is shipped from Chinese manufacturing partners directly into Amazon Warehousing & Distribution (AWD), utilizing Amazon Global Logistics (AGL) for eligible lanes. AWD acts as the master regional hub: it automatically replenishes Amazon FBA to avert stockouts, while Wesley Quintero manually generates outbound move requests to supply Walmart WFS and TikTok FBT. Map My Channel / WebBee coordinates real-time multi-channel inventory synchronization.',
+    data_source: 'HA data',
   },
   {
     region: 'CA',
@@ -55,6 +58,7 @@ export const GLOBAL_SUPPLY_CHAIN_FRAMEWORK: RegionalFramework[] = [
     ],
     operational_workflow:
       'Ocean shipments dock at Vancouver ports and are transferred immediately to Proline Logistics Services in Delta, BC. Proline de-stuffs containers, verifies carton counts, executes Amazon FNSKU barcode validation, builds pallet configurations to Amazon Canada specs, and coordinates outbound LTL freight directly to Amazon YHM1 (Hamilton, ON) and West Coast fulfillment centers.',
+    data_source: 'HA data',
   },
   {
     region: 'UK',
@@ -69,6 +73,7 @@ export const GLOBAL_SUPPLY_CHAIN_FRAMEWORK: RegionalFramework[] = [
     ],
     operational_workflow:
       'Shipments clear UK customs at Southampton/Felixstowe and are hauled inland to SSD Logistix in the Midlands. SSD provides bonded/buffer storage, devanning, carton labeling, and timed delivery slot coordination into Amazon UK fulfillment centers under Wesley Quintero’s oversight.',
+    data_source: 'HA data',
   },
 ];
 
@@ -86,6 +91,7 @@ export const OPERATIONS_CONTACTS: OperationsContact[] = [
       'Supplier terms & factory manufacturing agreements in China',
       'Macro inventory positioning and Q4 peak sales forecasting',
     ],
+    data_source: 'HA data',
   },
   {
     contact_id: 'CONT-02',
@@ -102,6 +108,7 @@ export const OPERATIONS_CONTACTS: OperationsContact[] = [
       'Carrier SLA performance, free time verification, and rate-card audits',
       'Operational decision interface governance & Google Sheets database synchronization',
     ],
+    data_source: 'HA data',
   },
   {
     contact_id: 'CONT-03',
@@ -117,6 +124,7 @@ export const OPERATIONS_CONTACTS: OperationsContact[] = [
       'Cross-docking and scheduled LTL appointment dispatch to Amazon YHM1',
       'Demurrage avoidance at Port of Vancouver',
     ],
+    data_source: 'HA data',
   },
   {
     contact_id: 'CONT-04',
@@ -132,6 +140,7 @@ export const OPERATIONS_CONTACTS: OperationsContact[] = [
       'Pallet build and timed CARP booking dispatch to Amazon UK FBA centers',
       'Buffer storage management during Q4 peak season',
     ],
+    data_source: 'HA data',
   },
   {
     contact_id: 'CONT-05',
@@ -145,6 +154,7 @@ export const OPERATIONS_CONTACTS: OperationsContact[] = [
       'Real-time inventory decrementing and automated safety buffer thresholds',
       'Order webhook routing and EDI transmission troubleshooting',
     ],
+    data_source: 'HA data',
   },
 ];
 
@@ -167,13 +177,14 @@ export const INITIAL_FORWARDERS: Forwarder[] = [
       'Amazon-operated end-to-end ocean logistics program. Directly integrates with AWD and FBA check-in, bypassing third-party drayage appointments. Billing directly applied through Amazon Seller Central account balance.',
     avg_transit_accuracy: 96,
     payment_terms: 'Amazon Seller Central Billing (Net deduction)',
+    data_source: 'HA data',
   },
   {
     forwarder_id: 'FWD-01',
     name: 'Apex Global Logistics',
     contact_name: 'David Chen',
     contact_email: 'dchen@apexgl-freight.com',
-    contact_phone: '+86 755 8829 4410',
+    contact_phone: '', // Uncollected: left blank
     service_regions: [
       'Shenzhen (Yantian / Shekou)',
       'Ningbo',
@@ -184,15 +195,16 @@ export const INITIAL_FORWARDERS: Forwarder[] = [
     active: true,
     notes:
       'Premier South China NVOCC partner with contracted vessel allocations on COSCO and EMC. Offers guaranteed 14-day container free time at destination and direct CFS devanning.',
-    avg_transit_accuracy: 94,
+    avg_transit_accuracy: undefined, // Uncollected SLA audit: left blank
     payment_terms: 'Net 30 days from Bill of Lading',
+    data_source: 'demo data',
   },
   {
     forwarder_id: 'FWD-02',
     name: 'TransPacific Freightways',
     contact_name: 'Angela Wu',
     contact_email: 'angela.wu@transpacific-fw.com',
-    contact_phone: '+86 574 8701 9283',
+    contact_phone: '', // Uncollected: left blank
     service_regions: [
       'Ningbo-Zhoushan',
       'Qingdao',
@@ -203,15 +215,16 @@ export const INITIAL_FORWARDERS: Forwarder[] = [
     active: true,
     notes:
       'Specialist in East China ports with dedicated IPI intermodal rail service directly into Chicago and Dallas logistics hubs. Competitive FCL rates and dependable chassis pools.',
-    avg_transit_accuracy: 91,
+    avg_transit_accuracy: undefined, // Uncollected SLA audit: left blank
     payment_terms: 'Net 15 days upon port arrival',
+    data_source: 'demo data',
   },
   {
     forwarder_id: 'FWD-03',
     name: 'SinoGlobal Express',
     contact_name: 'Marcus Zhang',
     contact_email: 'm.zhang@sinoglobal-logistics.cn',
-    contact_phone: '+86 20 8391 0022',
+    contact_phone: '', // Uncollected: left blank
     service_regions: [
       'Shenzhen',
       'Guangzhou',
@@ -222,8 +235,9 @@ export const INITIAL_FORWARDERS: Forwarder[] = [
     active: true,
     notes:
       'Agile multi-lane forwarder offering expedited LCL consolidation for smaller batch replenishment. Includes origin consolidation from multiple factories into a single bill of lading.',
-    avg_transit_accuracy: 88,
+    avg_transit_accuracy: undefined, // Uncollected SLA audit: left blank
     payment_terms: 'Deposit 20% on booking, balance Net 15',
+    data_source: 'demo data',
   },
   {
     forwarder_id: 'FWD-PROLINE',
@@ -241,6 +255,7 @@ export const INITIAL_FORWARDERS: Forwarder[] = [
       'Exclusive Canadian supply chain partner. Provides turnkey ocean freight from China, port drayage, container destuffing in Delta BC, FNSKU compliance, and scheduled LTL line-haul into Amazon YHM1.',
     avg_transit_accuracy: 95,
     payment_terms: 'Net 15 days',
+    data_source: 'HA data',
   },
   {
     forwarder_id: 'FWD-SSD',
@@ -258,13 +273,14 @@ export const INITIAL_FORWARDERS: Forwarder[] = [
       'Exclusive UK logistics & 3PL partner. Provides end-to-end UK customs clearance, ETSF customs warehouse handling, pallet breakdown, and designated carrier appointments into Amazon UK.',
     avg_transit_accuracy: 97,
     payment_terms: 'Net 30 days',
+    data_source: 'HA data',
   },
   {
     forwarder_id: 'FWD-FLX',
     name: 'Flexport International',
     contact_name: 'Sarah Jenkins',
     contact_email: 'sjenkins@flexport.com',
-    contact_phone: '1-800-845-6789',
+    contact_phone: '', // Uncollected: left blank
     service_regions: [
       'Global (US, Canada, UK, Europe)',
       'Yantian',
@@ -274,15 +290,16 @@ export const INITIAL_FORWARDERS: Forwarder[] = [
     active: true,
     notes:
       'Digital freight forwarding benchmark. Real-time GPS container tracking, automated customs filing, and transparent milestone reporting. Higher base rate with premium tech layer.',
-    avg_transit_accuracy: 96,
+    avg_transit_accuracy: undefined, // Uncollected SLA audit: left blank
     payment_terms: 'Net 30 days',
+    data_source: 'demo data',
   },
   {
     forwarder_id: 'FWD-EXP',
     name: 'Expeditors International',
     contact_name: 'Robert Vance',
     contact_email: 'robert.vance@expeditors.com',
-    contact_phone: '1-206-674-3400',
+    contact_phone: '', // Uncollected: left blank
     service_regions: [
       'Global Ocean & Air',
       'Trans-Pacific Express',
@@ -291,8 +308,9 @@ export const INITIAL_FORWARDERS: Forwarder[] = [
     active: true,
     notes:
       'Tier-1 global logistics carrier. Unmatched space protection during peak shipping crunches. Strict compliance procedures and bonded network.',
-    avg_transit_accuracy: 98,
+    avg_transit_accuracy: undefined, // Uncollected SLA audit: left blank
     payment_terms: 'Net 30 days',
+    data_source: 'demo data',
   },
 ];
 
@@ -326,6 +344,7 @@ export const INITIAL_SHIPMENTS: Shipment[] = [
     selected_forwarder_id: 'FWD-AGL',
     approval_notes:
       'AGL is currently the benchmark comparison option for direct US inbound to AWD ($1.11/unit landed logistics cost). Sign-off is routed to Justin Hopkins for executive FOB/customs approval.',
+    data_source: 'HA data',
   },
   {
     shipment_id: 'SHP-2026-108',
@@ -351,6 +370,7 @@ export const INITIAL_SHIPMENTS: Shipment[] = [
     selected_forwarder_id: 'FWD-PROLINE',
     approval_notes:
       'Proline handles 3PL destuffing, Canadian customs clearance, and pallet staging in Delta BC before final LTL push to Amazon YHM1. Assigned to Wesley Quintero for routing execution.',
+    data_source: 'HA data',
   },
   {
     shipment_id: 'SHP-2026-109',
@@ -376,6 +396,7 @@ export const INITIAL_SHIPMENTS: Shipment[] = [
     selected_forwarder_id: 'FWD-SSD',
     approval_notes:
       'SSD Logistix coordinates container hauling from Southampton, VAT deferment clearance, and timed CARP pallet delivery into Amazon UK fulfillment centers.',
+    data_source: 'HA data',
   },
   {
     shipment_id: 'SHP-2026-105',
@@ -401,6 +422,7 @@ export const INITIAL_SHIPMENTS: Shipment[] = [
     selected_forwarder_id: 'FWD-02',
     approval_notes:
       'TransPacific is competing against AGL for Ningbo-to-US Midwest inland rail routing. Free time of 14 days and rail ramp drayage included in quote comparison.',
+    data_source: 'demo data',
   },
   {
     shipment_id: 'SHP-2026-110',
@@ -426,6 +448,7 @@ export const INITIAL_SHIPMENTS: Shipment[] = [
     selected_forwarder_id: 'FWD-AGL',
     approval_notes:
       'High-weight density flagship SKU. AGL provides direct check-in into AWD without third-party chassis split surcharges.',
+    data_source: 'demo data',
   },
   {
     shipment_id: 'SHP-2026-111',
@@ -451,6 +474,7 @@ export const INITIAL_SHIPMENTS: Shipment[] = [
     selected_forwarder_id: 'FWD-01',
     approval_notes:
       'High-value culinary cutlery. Fast 18-day trans-Pacific transit with Apex LCL to beat Holiday cutoff dates.',
+    data_source: 'demo data',
   },
   {
     shipment_id: 'SHP-2026-112',
@@ -473,7 +497,8 @@ export const INITIAL_SHIPMENTS: Shipment[] = [
     product_unit_fob_cost: 16.2,
     status: 'quoting',
     approval_status: 'not_submitted',
-    approval_notes: 'Quotes currently requested from Proline and SinoGlobal for Canadian holiday restock.',
+    approval_notes: '', // Uncollected approval notes: left blank
+    data_source: 'demo data',
   },
 ];
 
@@ -1415,6 +1440,21 @@ export const INITIAL_QUOTES: Quote[] = [
   },
 ];
 
+// Ensure strict provenance tag per user governance:
+// "If it's HA-provided, call it HA data. If we invented it for demonstration, call it demo data."
+INITIAL_QUOTES.forEach((quote) => {
+  if (!quote.data_source) {
+    quote.data_source = ['Q-104-AGL', 'Q-108-PROLINE', 'Q-109-SSD'].includes(quote.quote_id)
+      ? 'HA data'
+      : 'demo data';
+  }
+  quote.components.forEach((c) => {
+    if (!c.data_source) {
+      c.data_source = quote.data_source;
+    }
+  });
+});
+
 export const INITIAL_HISTORICAL_SHIPMENTS: HistoricalShipment[] = [
   {
     history_id: 'HIST-2026-092',
@@ -1438,6 +1478,7 @@ export const INITIAL_HISTORICAL_SHIPMENTS: HistoricalShipment[] = [
     actual_transit_days: 19,
     variance_reason:
       'Shipment completed within quoted logistics cost; actual transit was 1 day faster than quoted. Seamless AWD receiving.',
+    data_source: 'HA data',
   },
   {
     history_id: 'HIST-2026-088',
@@ -1461,6 +1502,7 @@ export const INITIAL_HISTORICAL_SHIPMENTS: HistoricalShipment[] = [
     actual_transit_days: 18,
     variance_reason:
       'Shipment completed within budget; arrived at Delta 3PL warehouse 1 day ahead of schedule. Outbound to YHM1 dispatched smoothly.',
+    data_source: 'HA data',
   },
   {
     history_id: 'HIST-2026-079',
@@ -1484,6 +1526,7 @@ export const INITIAL_HISTORICAL_SHIPMENTS: HistoricalShipment[] = [
     actual_transit_days: 30,
     variance_reason:
       'Southampton port congestion resulted in 2-day dwell time and additional terminal accessorial fees.',
+    data_source: 'HA data',
   },
   {
     history_id: 'HIST-2026-071',
@@ -1507,6 +1550,7 @@ export const INITIAL_HISTORICAL_SHIPMENTS: HistoricalShipment[] = [
     actual_transit_days: 26,
     variance_reason:
       'Long Beach port chassis shortage triggered tri-axle split drayage surcharge ($450) and a 4-day wait for AWD appointment slot.',
+    data_source: 'demo data',
   },
   {
     history_id: 'HIST-2026-065',
@@ -1530,6 +1574,7 @@ export const INITIAL_HISTORICAL_SHIPMENTS: HistoricalShipment[] = [
     actual_transit_days: 20,
     variance_reason:
       'Executed on budget on time. Multi-channel outbound from AWD to Walmart WFS initiated within 48 hours of check-in.',
+    data_source: 'HA data',
   },
   {
     history_id: 'HIST-2026-054',
@@ -1553,6 +1598,7 @@ export const INITIAL_HISTORICAL_SHIPMENTS: HistoricalShipment[] = [
     actual_transit_days: 29,
     variance_reason:
       'Rail interchange bottleneck between UP and BNSF in Kansas City added 3 days and destination storage fee.',
+    data_source: 'demo data',
   },
   {
     history_id: 'HIST-2026-042',
@@ -1576,6 +1622,7 @@ export const INITIAL_HISTORICAL_SHIPMENTS: HistoricalShipment[] = [
     actual_transit_days: 19,
     variance_reason:
       'US Customs Intensive Exam (CET Vacis exam) random hold at Long Beach port incurred $120 inspection fee.',
+    data_source: 'demo data',
   },
   {
     history_id: 'HIST-2026-031',
@@ -1599,6 +1646,7 @@ export const INITIAL_HISTORICAL_SHIPMENTS: HistoricalShipment[] = [
     actual_transit_days: 19,
     variance_reason:
       'Perfect execution. Palletized and shrink-wrapped at Proline Delta facility with Amazon Canada compliance labels.',
+    data_source: 'HA data',
   },
 ];
 
@@ -1618,6 +1666,7 @@ export const INITIAL_RATE_CARDS: RateCard[] = [
     expiration_date: '2026-11-30',
     notes:
       'HA primary baseline lane for US West Coast AWD inbound. Review monthly against spot market.',
+    data_source: 'HA data',
   },
   {
     card_id: 'RC-PRO-NB-VAN',
@@ -1634,6 +1683,7 @@ export const INITIAL_RATE_CARDS: RateCard[] = [
     expiration_date: '2026-11-15',
     notes:
       'HA exclusive Canadian partner rate. Feeds Amazon Canada (YHM1) and domestic fulfillment.',
+    data_source: 'HA data',
   },
   {
     card_id: 'RC-SSD-SZ-SOU',
@@ -1649,6 +1699,7 @@ export const INITIAL_RATE_CARDS: RateCard[] = [
     effective_date: '2026-09-01',
     expiration_date: '2026-12-31',
     notes: 'HA primary UK supply chain lane for Amazon UK FBA replenishment.',
+    data_source: 'HA data',
   },
   {
     card_id: 'RC-APX-SZ-USWC',
@@ -1664,6 +1715,7 @@ export const INITIAL_RATE_CARDS: RateCard[] = [
     effective_date: '2026-09-01',
     expiration_date: '2026-10-31',
     notes: 'Competitive alternative to AGL for US West Coast freight.',
+    data_source: 'demo data',
   },
   {
     card_id: 'RC-TPF-NB-ORD',
@@ -1679,6 +1731,7 @@ export const INITIAL_RATE_CARDS: RateCard[] = [
     effective_date: '2026-09-01',
     expiration_date: '2026-11-30',
     notes: 'Cost-effective routing for Midwest AWD stocking without California drayage bottleneck.',
+    data_source: 'demo data',
   },
   {
     card_id: 'RC-FLX-SZ-LA',
@@ -1694,5 +1747,6 @@ export const INITIAL_RATE_CARDS: RateCard[] = [
     effective_date: '2026-09-01',
     expiration_date: '2026-12-31',
     notes: 'Digital freight forwarder benchmark lane.',
+    data_source: 'demo data',
   },
 ];

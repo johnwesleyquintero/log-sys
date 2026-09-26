@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shipment, Forwarder } from '../types';
+import { DataSourceBadge } from './DataSourceBadge';
 import {
   Package,
   Calendar,
@@ -139,9 +140,12 @@ export const ShipmentSelector: React.FC<ShipmentSelectorProps> = ({
         <div className="pt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 text-xs">
           {/* Column 1: Product & PO */}
           <div className="space-y-1">
-            <div className="flex items-center gap-1.5 text-neutral-400 font-medium">
-              <Package className="w-3.5 h-3.5 text-neutral-500" />
-              <span>PO & Product</span>
+            <div className="flex items-center justify-between gap-1.5 text-neutral-400 font-medium">
+              <div className="flex items-center gap-1.5">
+                <Package className="w-3.5 h-3.5 text-neutral-500" />
+                <span>PO & Product</span>
+              </div>
+              <DataSourceBadge source={activeShipment.data_source} />
             </div>
             <div className="font-semibold text-neutral-100 text-sm truncate" title={activeShipment.product_name}>
               {activeShipment.product_name}

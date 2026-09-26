@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { HistoricalShipment, Forwarder } from '../types';
+import { HistoricalShipment, Forwarder, DataSource } from '../types';
 import { formatUSD } from '../utils/calculations';
+import { DataSourceBadge } from './DataSourceBadge';
 import { TrendingUp, AlertTriangle, CheckCircle2, Search, Filter, Plus, ArrowUpRight, ArrowDownRight, Clock, FileSpreadsheet } from 'lucide-react';
 
 interface HistoricalAnalysisProps {
@@ -16,9 +17,11 @@ export const HistoricalAnalysis: React.FC<HistoricalAnalysisProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [forwarderFilter, setForwarderFilter] = useState('ALL');
+  const [sourceFilter, setSourceFilter] = useState<'ALL' | DataSource>('ALL');
   const [isAddingRecord, setIsAddingRecord] = useState(false);
 
   // New record form state
+  const [dataSource, setDataSource] = useState<DataSource>('HA data');
   const [newPo, setNewPo] = useState('HA-PO-8812');
   const [newSku, setNewSku] = useState('HA-CIS-01');
   const [newProductName, setNewProductName] = useState('Artisan Cast Iron Skillet Set');
@@ -33,6 +36,9 @@ export const HistoricalAnalysis: React.FC<HistoricalAnalysisProps> = ({
   const [newReason, setNewReason] = useState('Weekend terminal gate fee and chassis rental surcharge.');
 
   const filtered = historicalShipments.filter((h) => {
+    if (sourceFilter !== 'ALL') {
+      if ((h.data_source || '') !== sourceFilter) return false;
+    }
     const matchesSearch =
       h.PO.toLowerCase().includes(searchTerm.toLowerCase()) ||
       h.SKU.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -62,6 +68,7 @@ export const HistoricalAnalysis: React.FC<HistoricalAnalysisProps> = ({
 
     const record: HistoricalShipment = {
       history_id: `HIST-${Date.now().toString().slice(-4)}`,
+      data_source: dataSource,
       shipment_id: `SHP-${newPo.replace('HA-PO-', '')}`,
       PO: newPo,
       SKU: newSku,
@@ -175,20 +182,39 @@ export const HistoricalAnalysis: React.FC<HistoricalAnalysisProps> = ({
           />
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto text-xs w-full sm:w-auto">
-          <span className="text-neutral-400 font-medium">Forwarder:</span>
-          <select
-            value={forwarderFilter}
-            onChange={(e) => setForwarderFilter(e.target.value)}
-            className="bg-neutral-950 border border-neutral-700 rounded px-2.5 py-1.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-400"
-          >
-            <option value="ALL">All Forwarders</option>
-            {forwarders.map((f) => (
-              <option key={f.forwarder_id} value={f.forwarder_id}>
-                {f.name}
-              </option>
+        <div className="flex flex-wrap items-center gap-3 self-start sm:self-auto text-xs w-full sm:w-auto">
+          <div className="flex items-center gap-1.5">
+            <span className="text-neutral-500">Origin:</span>
+            {(['ALL', 'HA data', 'demo data'] as const).map((filterVal) => (
+              <button
+                key={filterVal}
+                onClick={() => setSourceFilter(filterVal)}
+                className={`text-[11px] px-2.5 py-1 rounded transition-colors cursor-pointer border ${
+                  sourceFilter === filterVal
+                    ? 'bg-neutral-800 text-neutral-100 border-neutral-700 font-semibold'
+                    : 'bg-neutral-950 text-neutral-400 hover:text-neutral-200 border-neutral-800'
+                }`}
+              >
+                {filterVal === 'ALL' ? 'All Records' : filterVal}
+              </button>
             ))}
-          </select>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-neutral-400 font-medium">Forwarder:</span>
+            <select
+              value={forwarderFilter}
+              onChange={(e) => setForwarderFilter(e.target.value)}
+              className="bg-neutral-950 border border-neutral-700 rounded px-2.5 py-1.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-400"
+            >
+              <option value="ALL">All Forwarders</option>
+              {forwarders.map((f) => (
+                <option key={f.forwarder_id} value={f.forwarder_id}>
+                  {f.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -216,7 +242,10 @@ export const HistoricalAnalysis: React.FC<HistoricalAnalysisProps> = ({
                 return (
                   <tr key={item.history_id} className="hover:bg-neutral-800/40 transition-colors">
                     <td className="py-3 px-4">
-                      <div className="font-bold text-neutral-100">{item.PO}</div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-neutral-100">{item.PO}</span>
+                        <DataSourceBadge source={item.data_source} size="xs" />
+                      </div>
                       <div className="text-[11px] text-neutral-400 font-sans">
                         {item.SKU} · {item.completed_date}
                       </div>
@@ -285,6 +314,32 @@ export const HistoricalAnalysis: React.FC<HistoricalAnalysisProps> = ({
             </div>
 
             <form onSubmit={handleSaveRecord} className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold block mb-1 text-neutral-300">Data Origin / Provenance</label>
+                <div className="flex items-center gap-3">
+                  <label className="inline-flex items-center gap-1.5 text-neutral-200 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="histOrigin"
+                      checked={dataSource === 'HA data'}
+                      onChange={() => setDataSource('HA data')}
+                      className="accent-amber-400"
+                    />
+                    <span>HA data (Hungry Artisan Actuals)</span>
+                  </label>
+                  <label className="inline-flex items-center gap-1.5 text-neutral-200 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="histOrigin"
+                      checked={dataSource === 'demo data'}
+                      onChange={() => setDataSource('demo data')}
+                      className="accent-amber-400"
+                    />
+                    <span>Demo data (Demonstration)</span>
+                  </label>
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="font-semibold block mb-1 text-neutral-300">PO Number</label>

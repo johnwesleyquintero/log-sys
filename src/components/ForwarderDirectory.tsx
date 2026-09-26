@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Forwarder } from '../types';
+import { Forwarder, DataSource } from '../types';
+import { DataSourceBadge } from './DataSourceBadge';
 import { Users, Mail, Phone, MapPin, Plus, CheckCircle2, XCircle, Search, Edit } from 'lucide-react';
 
 interface ForwarderDirectoryProps {
@@ -14,6 +15,7 @@ export const ForwarderDirectory: React.FC<ForwarderDirectoryProps> = ({
   onToggleActive,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [sourceFilter, setSourceFilter] = useState<'ALL' | DataSource>('ALL');
   const [isAdding, setIsAdding] = useState(false);
 
   // New forwarder form
@@ -21,11 +23,15 @@ export const ForwarderDirectory: React.FC<ForwarderDirectoryProps> = ({
   const [contactName, setContactName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
+  const [dataSource, setDataSource] = useState<DataSource>('HA data');
   const [regions, setRegions] = useState('Shenzhen, Ningbo, US West Coast');
   const [paymentTerms, setPaymentTerms] = useState('Net 30 days from Bill of Lading');
   const [notes, setNotes] = useState('');
 
   const filtered = forwarders.filter((f) => {
+    if (sourceFilter !== 'ALL') {
+      if ((f.data_source || '') !== sourceFilter) return false;
+    }
     const text = `${f.name} ${f.contact_name} ${f.contact_email} ${f.service_regions.join(' ')}`.toLowerCase();
     return text.includes(searchTerm.toLowerCase());
   });
@@ -34,10 +40,11 @@ export const ForwarderDirectory: React.FC<ForwarderDirectoryProps> = ({
     e.preventDefault();
     const newFwd: Forwarder = {
       forwarder_id: `FWD-${Math.floor(10 + Math.random() * 90)}`,
+      data_source: dataSource,
       name,
       contact_name: contactName,
       contact_email: contactEmail,
-      contact_phone: contactPhone,
+      contact_phone: contactPhone || '',
       service_regions: regions.split(',').map((r) => r.trim()),
       active: true,
       notes,
@@ -71,16 +78,35 @@ export const ForwarderDirectory: React.FC<ForwarderDirectoryProps> = ({
         </button>
       </div>
 
-      {/* Search */}
-      <div className="relative w-full max-w-sm">
-        <Search className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search forwarders by name, lane, or contact..."
-          className="w-full bg-neutral-900 border border-neutral-800 rounded pl-8 pr-3 py-1.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-400"
-        />
+      {/* Search & Provenance Filters */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <div className="relative w-full max-w-sm">
+          <Search className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search forwarders by name, lane, or contact..."
+            className="w-full bg-neutral-900 border border-neutral-800 rounded pl-8 pr-3 py-1.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-400"
+          />
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] text-neutral-500">Filter Provenance:</span>
+          {(['ALL', 'HA data', 'demo data'] as const).map((filterVal) => (
+            <button
+              key={filterVal}
+              onClick={() => setSourceFilter(filterVal)}
+              className={`text-[11px] px-2.5 py-1 rounded transition-colors cursor-pointer border ${
+                sourceFilter === filterVal
+                  ? 'bg-neutral-800 text-neutral-100 border-neutral-700 font-semibold'
+                  : 'bg-neutral-950 text-neutral-400 hover:text-neutral-200 border-neutral-800'
+              }`}
+            >
+              {filterVal === 'ALL' ? 'All Partners' : filterVal}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Forwarders Grid */}
@@ -92,7 +118,10 @@ export const ForwarderDirectory: React.FC<ForwarderDirectoryProps> = ({
           >
             <div>
               <div className="flex items-start justify-between gap-2 mb-2">
-                <span className="text-xs font-mono text-neutral-400">{fwd.forwarder_id}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono text-neutral-400">{fwd.forwarder_id}</span>
+                  <DataSourceBadge source={fwd.data_source} size="xs" />
+                </div>
                 <button
                   onClick={() => onToggleActive(fwd.forwarder_id)}
                   className={`text-[11px] font-medium px-2 py-0.5 rounded cursor-pointer border ${
@@ -118,12 +147,12 @@ export const ForwarderDirectory: React.FC<ForwarderDirectoryProps> = ({
                     {fwd.contact_email}
                   </a>
                 </div>
-                {fwd.contact_phone && (
+                {fwd.contact_phone ? (
                   <div className="flex items-center gap-2 font-mono text-neutral-400">
                     <Phone className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
                     <span>{fwd.contact_phone}</span>
                   </div>
-                )}
+                ) : null}
               </div>
 
               {/* Service Regions as clean unboxed text list */}
@@ -144,14 +173,16 @@ export const ForwarderDirectory: React.FC<ForwarderDirectoryProps> = ({
               <div className="flex items-center justify-between">
                 <span>Payment Terms:</span>
                 <span className="text-neutral-200 truncate max-w-[170px]" title={fwd.payment_terms}>
-                  {fwd.payment_terms}
+                  {fwd.payment_terms || '—'}
                 </span>
               </div>
               <div className="flex items-center justify-between font-mono">
                 <span>Schedule Accuracy:</span>
-                <span className="text-emerald-400 font-medium">{fwd.avg_transit_accuracy}%</span>
+                <span className="text-emerald-400 font-medium">
+                  {fwd.avg_transit_accuracy ? `${fwd.avg_transit_accuracy}%` : '—'}
+                </span>
               </div>
-              {fwd.notes && <div className="italic text-neutral-400 text-[11px] pt-1">"{fwd.notes}"</div>}
+              {fwd.notes ? <div className="italic text-neutral-400 text-[11px] pt-1">"{fwd.notes}"</div> : null}
             </div>
           </div>
         ))}
@@ -169,6 +200,32 @@ export const ForwarderDirectory: React.FC<ForwarderDirectoryProps> = ({
             </div>
 
             <form onSubmit={handleSave} className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold block mb-1 text-neutral-300">Data Origin / Provenance</label>
+                <div className="flex items-center gap-3">
+                  <label className="inline-flex items-center gap-1.5 text-neutral-200 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="origin"
+                      checked={dataSource === 'HA data'}
+                      onChange={() => setDataSource('HA data')}
+                      className="accent-amber-400"
+                    />
+                    <span>HA data (Hungry Artisan Verified)</span>
+                  </label>
+                  <label className="inline-flex items-center gap-1.5 text-neutral-200 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="origin"
+                      checked={dataSource === 'demo data'}
+                      onChange={() => setDataSource('demo data')}
+                      className="accent-amber-400"
+                    />
+                    <span>Demo data (Demonstration)</span>
+                  </label>
+                </div>
+              </div>
+
               <div>
                 <label className="font-semibold block mb-1 text-neutral-300">Company Name</label>
                 <input
@@ -211,6 +268,7 @@ export const ForwarderDirectory: React.FC<ForwarderDirectoryProps> = ({
                     type="text"
                     value={contactPhone}
                     onChange={(e) => setContactPhone(e.target.value)}
+                    placeholder="Leave blank if not collected yet"
                     className="w-full bg-neutral-950 border border-neutral-700 rounded p-1.5 text-neutral-200 focus:outline-none font-mono"
                   />
                 </div>
@@ -269,3 +327,4 @@ export const ForwarderDirectory: React.FC<ForwarderDirectoryProps> = ({
     </div>
   );
 };
+

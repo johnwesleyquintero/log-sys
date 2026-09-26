@@ -1,5 +1,7 @@
 export type Currency = 'USD' | 'CNY' | 'CAD' | 'GBP';
 
+export type DataSource = 'HA data' | 'demo data' | '';
+
 export type SupplyChainRegion = 'US' | 'CA' | 'UK';
 
 export type RateUnit =
@@ -49,8 +51,9 @@ export interface Forwarder {
   service_regions: string[];
   active: boolean;
   notes: string;
-  avg_transit_accuracy: number; // e.g. 94%
+  avg_transit_accuracy?: number; // e.g. 94% or omitted if uncollected
   payment_terms: string; // e.g. "Net 30 from arrival"
+  data_source?: DataSource;
 }
 
 export interface QuoteComponent {
@@ -65,6 +68,7 @@ export interface QuoteComponent {
   amount_usd: number; // Normalized to USD
   is_included_in_quote: boolean;
   notes?: string;
+  data_source?: DataSource;
 }
 
 export interface Quote {
@@ -85,6 +89,7 @@ export interface Quote {
   service_assumptions: string;
   components: QuoteComponent[];
   status: 'active' | 'expired' | 'selected' | 'superseded';
+  data_source?: DataSource;
 }
 
 export interface Shipment {
@@ -112,6 +117,7 @@ export interface Shipment {
   approval_notes?: string;
   approved_by?: string;
   approved_at?: string;
+  data_source?: DataSource;
 }
 
 export interface OperationsContact {
@@ -123,6 +129,7 @@ export interface OperationsContact {
   phone?: string;
   location?: string;
   responsibilities: string[];
+  data_source?: DataSource;
 }
 
 export interface DecisionFlag {
@@ -181,6 +188,7 @@ export interface HistoricalShipment {
   quoted_transit_days: number;
   actual_transit_days: number;
   variance_reason: string;
+  data_source?: DataSource;
 }
 
 export interface RateCard {
@@ -196,6 +204,7 @@ export interface RateCard {
   effective_date: string;
   expiration_date: string;
   notes: string;
+  data_source?: DataSource;
 }
 
 export interface SheetsSyncState {

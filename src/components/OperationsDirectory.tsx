@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { OperationsContact, SupplyChainRegion } from '../types';
+import { DataSourceBadge } from './DataSourceBadge';
 import {
   GLOBAL_SUPPLY_CHAIN_FRAMEWORK,
   OPERATIONS_CONTACTS,
@@ -89,8 +90,11 @@ export const OperationsDirectory: React.FC = () => {
       <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-800 pb-4">
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-amber-400 mb-1">
-              Architecture & Inbound Flow
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-semibold uppercase tracking-wider text-amber-400">
+                Architecture & Inbound Flow
+              </span>
+              <DataSourceBadge source={activeFramework.data_source} size="xs" />
             </div>
             <h3 className="text-base font-bold text-white">Regional Storage & Fulfillment Corridors</h3>
           </div>
@@ -248,11 +252,14 @@ export const OperationsDirectory: React.FC = () => {
                 className="bg-neutral-900 border border-neutral-800 rounded-lg p-5 flex flex-col justify-between space-y-4 hover:border-neutral-700 transition-colors shadow-xs"
               >
                 <div>
-                  {/* Top Bar: Organization & Location */}
+                  {/* Top Bar: Organization & Location & Provenance */}
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <span className="text-xs font-semibold text-neutral-300">
-                      {contact.organization}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-neutral-300">
+                        {contact.organization}
+                      </span>
+                      <DataSourceBadge source={contact.data_source} size="xs" />
+                    </div>
                     {contact.location && (
                       <span className="text-[11px] font-medium text-neutral-400 flex items-center gap-1">
                         <MapPin className="w-3 h-3 text-neutral-500 shrink-0" />

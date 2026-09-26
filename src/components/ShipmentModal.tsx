@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shipment, SupplyChainRegion } from '../types';
+import { Shipment, SupplyChainRegion, DataSource } from '../types';
 import { X, Package, Calendar, Box, Scale, MapPin, Building2, ShoppingBag } from 'lucide-react';
 
 interface ShipmentModalProps {
@@ -15,6 +15,9 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
   onSaveShipment,
   existingShipment,
 }) => {
+  const [dataSource, setDataSource] = useState<DataSource>(
+    existingShipment?.data_source || 'HA data'
+  );
   const [shipmentId, setShipmentId] = useState(
     existingShipment?.shipment_id || `SHP-2026-${Math.floor(100 + Math.random() * 900)}`,
   );
@@ -70,6 +73,7 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
     e.preventDefault();
     const newShipment: Shipment = {
       shipment_id: shipmentId,
+      data_source: dataSource,
       region,
       primary_storage_hub: storageHub,
       fulfillment_channels: channels.split(',').map((c) => c.trim()),
@@ -89,10 +93,10 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
       product_unit_fob_cost: Number(productFobCost) || 0,
       status: existingShipment?.status || 'quoting',
       approval_status: existingShipment?.approval_status || 'not_submitted',
-      selected_forwarder_id: existingShipment?.selected_forwarder_id,
-      approval_notes: existingShipment?.approval_notes,
-      approved_by: existingShipment?.approved_by,
-      approved_at: existingShipment?.approved_at,
+      selected_forwarder_id: existingShipment?.selected_forwarder_id || '',
+      approval_notes: existingShipment?.approval_notes || '',
+      approved_by: existingShipment?.approved_by || '',
+      approved_at: existingShipment?.approved_at || '',
     };
 
     onSaveShipment(newShipment);
@@ -123,6 +127,33 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+          {/* Data Provenance Option */}
+          <div className="p-3 bg-neutral-950 border border-neutral-800 rounded">
+            <label className="font-semibold text-neutral-300 block mb-1.5">Data Origin / Provenance</label>
+            <div className="flex items-center gap-4">
+              <label className="inline-flex items-center gap-1.5 text-neutral-200 cursor-pointer">
+                <input
+                  type="radio"
+                  name="shipmentOrigin"
+                  checked={dataSource === 'HA data'}
+                  onChange={() => setDataSource('HA data')}
+                  className="accent-amber-400"
+                />
+                <span>HA data (Hungry Artisan Actual)</span>
+              </label>
+              <label className="inline-flex items-center gap-1.5 text-neutral-200 cursor-pointer">
+                <input
+                  type="radio"
+                  name="shipmentOrigin"
+                  checked={dataSource === 'demo data'}
+                  onChange={() => setDataSource('demo data')}
+                  className="accent-amber-400"
+                />
+                <span>Demo data (Demonstration)</span>
+              </label>
+            </div>
+          </div>
+
           {/* Region & Hub Selection */}
           <div className="p-3 bg-neutral-950 border border-neutral-800 rounded space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

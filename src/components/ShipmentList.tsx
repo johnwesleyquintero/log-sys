@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Shipment, Forwarder, Quote, SupplyChainRegion } from '../types';
+import { Shipment, Forwarder, Quote, SupplyChainRegion, DataSource } from '../types';
 import { formatUSD } from '../utils/calculations';
+import { DataSourceBadge } from './DataSourceBadge';
 import {
   Package,
   Plus,
@@ -39,12 +40,17 @@ export const ShipmentList: React.FC<ShipmentListProps> = ({
 }) => {
   const [filterRegion, setFilterRegion] = useState<string>('ALL');
   const [filterStatus, setFilterStatus] = useState<string>('ALL');
+  const [filterSource, setFilterSource] = useState<string>('ALL');
 
   const filtered = shipments.filter((s) => {
     const matchesRegion = filterRegion === 'ALL' || s.region === filterRegion;
     const matchesStatus =
       filterStatus === 'ALL' || s.approval_status === filterStatus || s.status === filterStatus;
-    return matchesRegion && matchesStatus;
+    const matchesSource =
+      filterSource === 'ALL' ||
+      (filterSource === 'HA data' && s.data_source === 'HA data') ||
+      (filterSource === 'demo data' && s.data_source === 'demo data');
+    return matchesRegion && matchesStatus && matchesSource;
   });
 
   return (
@@ -86,6 +92,28 @@ export const ShipmentList: React.FC<ShipmentListProps> = ({
           ))}
         </div>
 
+        {/* Provenance Filter */}
+        <div className="flex items-center gap-1">
+          <span className="text-neutral-400 font-medium px-2">Data Source:</span>
+          {[
+            { id: 'ALL', label: 'All Data' },
+            { id: 'HA data', label: 'HA data' },
+            { id: 'demo data', label: 'demo data' },
+          ].map((src) => (
+            <button
+              key={src.id}
+              onClick={() => setFilterSource(src.id)}
+              className={`px-2.5 py-1.5 font-medium rounded transition-colors cursor-pointer flex items-center gap-1 ${
+                filterSource === src.id
+                  ? 'bg-neutral-800 text-amber-400 shadow-sm'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              {src.label}
+            </button>
+          ))}
+        </div>
+
         {/* Status Filter */}
         <div className="flex items-center gap-1">
           <span className="text-neutral-400 font-medium px-2">Status:</span>
@@ -123,13 +151,14 @@ export const ShipmentList: React.FC<ShipmentListProps> = ({
             >
               <div>
                 <div className="flex items-start justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="px-1.5 py-0.5 text-[11px] font-bold rounded bg-neutral-950 border border-neutral-700 text-amber-400 font-mono">
                       {shipment.region}
                     </span>
                     <span className="font-mono text-xs font-bold text-neutral-100">
                       {shipment.shipment_id}
                     </span>
+                    <DataSourceBadge source={shipment.data_source} />
                     <span className="text-neutral-500 font-mono">·</span>
                     <span className="font-mono text-xs text-neutral-400">PO: {shipment.PO}</span>
                   </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Quote, Shipment, Forwarder, CostAnalysis } from '../types';
 import { analyzeQuoteCost, formatUSD } from '../utils/calculations';
+import { DataSourceBadge } from './DataSourceBadge';
 import {
   AlertTriangle,
   CheckCircle2,
@@ -207,12 +208,15 @@ export const ScenarioComparison: React.FC<ScenarioComparisonProps> = ({
                     : 'border-neutral-800 hover:border-neutral-700'
                 }`}
               >
-                {/* Header: Forwarder & Ref */}
+                {/* Header: Forwarder & Ref & Provenance */}
                 <div className="p-4 border-b border-neutral-800/80 space-y-2">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <div className="text-xs text-neutral-400 font-mono">
-                        {quote.quote_reference || quote.quote_id}
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="text-xs text-neutral-400 font-mono">
+                          {quote.quote_reference || quote.quote_id}
+                        </span>
+                        <DataSourceBadge source={quote.data_source} size="xs" />
                       </div>
                       <h3 className="font-bold text-base text-white truncate" title={fwd?.name}>
                         {fwd?.name || 'Unknown Forwarder'}

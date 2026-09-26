@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { RateCard, Forwarder, RateUnit, Currency } from '../types';
+import { RateCard, Forwarder, RateUnit, Currency, DataSource } from '../types';
 import { formatUSD } from '../utils/calculations';
+import { DataSourceBadge } from './DataSourceBadge';
 import { CreditCard, AlertTriangle, CheckCircle2, Clock, Plus, Search, Filter } from 'lucide-react';
 
 interface RateCardManagerProps {
@@ -17,9 +18,11 @@ export const RateCardManager: React.FC<RateCardManagerProps> = ({
   onDeleteRateCard,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [sourceFilter, setSourceFilter] = useState<'ALL' | DataSource>('ALL');
   const [isAdding, setIsAdding] = useState(false);
 
   // Form states
+  const [dataSource, setDataSource] = useState<DataSource>('HA data');
   const [forwarderId, setForwarderId] = useState(forwarders[0]?.forwarder_id || '');
   const [routeName, setRouteName] = useState('Shenzhen (Yantian) to Long Beach CFS');
   const [serviceType, setServiceType] = useState('Ocean LCL');
@@ -52,6 +55,9 @@ export const RateCardManager: React.FC<RateCardManagerProps> = ({
   };
 
   const filtered = rateCards.filter((c) => {
+    if (sourceFilter !== 'ALL') {
+      if ((c.data_source || '') !== sourceFilter) return false;
+    }
     const fwd = forwarders.find((f) => f.forwarder_id === c.forwarder_id);
     const text = `${c.route_name} ${fwd?.name} ${c.notes} ${c.service_type}`.toLowerCase();
     return text.includes(searchTerm.toLowerCase());
@@ -61,6 +67,7 @@ export const RateCardManager: React.FC<RateCardManagerProps> = ({
     e.preventDefault();
     const newCard: RateCard = {
       card_id: `RC-${Date.now().toString().slice(-5)}`,
+      data_source: dataSource,
       forwarder_id: forwarderId,
       route_name: routeName,
       service_type: serviceType,
@@ -104,16 +111,35 @@ export const RateCardManager: React.FC<RateCardManagerProps> = ({
         </div>
       </div>
 
-      {/* Search */}
-      <div className="relative w-full max-w-sm">
-        <Search className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Filter rate cards by route or forwarder..."
-          className="w-full bg-neutral-900 border border-neutral-800 rounded pl-8 pr-3 py-1.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-400"
-        />
+      {/* Search & Provenance Filters */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <div className="relative w-full max-w-sm">
+          <Search className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Filter rate cards by route or forwarder..."
+            className="w-full bg-neutral-900 border border-neutral-800 rounded pl-8 pr-3 py-1.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-400"
+          />
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] text-neutral-500">Filter Provenance:</span>
+          {(['ALL', 'HA data', 'demo data'] as const).map((filterVal) => (
+            <button
+              key={filterVal}
+              onClick={() => setSourceFilter(filterVal)}
+              className={`text-[11px] px-2.5 py-1 rounded transition-colors cursor-pointer border ${
+                sourceFilter === filterVal
+                  ? 'bg-neutral-800 text-neutral-100 border-neutral-700 font-semibold'
+                  : 'bg-neutral-950 text-neutral-400 hover:text-neutral-200 border-neutral-800'
+              }`}
+            >
+              {filterVal === 'ALL' ? 'All Cards' : filterVal}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Rate Cards Grid */}
@@ -129,7 +155,10 @@ export const RateCardManager: React.FC<RateCardManagerProps> = ({
             >
               <div>
                 <div className="flex items-start justify-between gap-2 mb-2">
-                  <span className="text-xs font-mono text-neutral-400">{card.card_id}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono text-neutral-400">{card.card_id}</span>
+                    <DataSourceBadge source={card.data_source} size="xs" />
+                  </div>
                   <span className={`text-[11px] font-medium px-2 py-0.5 rounded border ${status.color}`}>
                     {status.label}
                   </span>
@@ -159,10 +188,12 @@ export const RateCardManager: React.FC<RateCardManagerProps> = ({
                   <div>
                     <span className="text-neutral-500">Service:</span> {card.service_type}
                   </div>
-                  <div>
-                    <span className="text-neutral-500">Surcharges:</span>{' '}
-                    <span className="text-neutral-300">{card.surcharges_note}</span>
-                  </div>
+                  {card.surcharges_note ? (
+                    <div>
+                      <span className="text-neutral-500">Surcharges:</span>{' '}
+                      <span className="text-neutral-300">{card.surcharges_note}</span>
+                    </div>
+                  ) : null}
                   {card.notes && (
                     <div className="italic text-neutral-400 pt-1">"{card.notes}"</div>
                   )}
@@ -197,6 +228,32 @@ export const RateCardManager: React.FC<RateCardManagerProps> = ({
             </div>
 
             <form onSubmit={handleSave} className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold block mb-1 text-neutral-300">Data Origin / Provenance</label>
+                <div className="flex items-center gap-3">
+                  <label className="inline-flex items-center gap-1.5 text-neutral-200 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="rateOrigin"
+                      checked={dataSource === 'HA data'}
+                      onChange={() => setDataSource('HA data')}
+                      className="accent-amber-400"
+                    />
+                    <span>HA data (Hungry Artisan Verified)</span>
+                  </label>
+                  <label className="inline-flex items-center gap-1.5 text-neutral-200 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="rateOrigin"
+                      checked={dataSource === 'demo data'}
+                      onChange={() => setDataSource('demo data')}
+                      className="accent-amber-400"
+                    />
+                    <span>Demo data (Demonstration)</span>
+                  </label>
+                </div>
+              </div>
+
               <div>
                 <label className="font-semibold block mb-1 text-neutral-300">Forwarder</label>
                 <select

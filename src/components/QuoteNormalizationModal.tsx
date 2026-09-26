@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Quote, Shipment, Forwarder, QuoteComponent, ComponentCategory, RateUnit, Currency, Incoterm, ServiceType } from '../types';
+import { Quote, Shipment, Forwarder, QuoteComponent, ComponentCategory, RateUnit, Currency, Incoterm, ServiceType, DataSource } from '../types';
 import { calculateComponentAmountUSD, formatUSD } from '../utils/calculations';
 import { X, Plus, Trash2, Calculator, Check, AlertCircle, FileText } from 'lucide-react';
 
@@ -20,6 +20,9 @@ export const QuoteNormalizationModal: React.FC<QuoteNormalizationModalProps> = (
   quoteToEdit,
   onSaveQuote,
 }) => {
+  const [dataSource, setDataSource] = useState<DataSource>(
+    quoteToEdit?.data_source || 'demo data'
+  );
   const [forwarderId, setForwarderId] = useState<string>(
     quoteToEdit?.forwarder_id || forwarders[0]?.forwarder_id || '',
   );
@@ -141,10 +144,12 @@ export const QuoteNormalizationModal: React.FC<QuoteNormalizationModalProps> = (
     const normalizedComponents = components.map((c) => ({
       ...c,
       quote_id: finalQuoteId,
+      data_source: dataSource,
     }));
 
     const newQuote: Quote = {
       quote_id: finalQuoteId,
+      data_source: dataSource,
       forwarder_id: forwarderId,
       shipment_id: shipment.shipment_id,
       quote_reference: quoteReference,
@@ -192,6 +197,33 @@ export const QuoteNormalizationModal: React.FC<QuoteNormalizationModalProps> = (
         </div>
 
         <form onSubmit={handleSave} className="space-y-6">
+          {/* Provenance Selection */}
+          <div className="p-3 bg-neutral-950 border border-neutral-800 rounded text-xs">
+            <label className="font-semibold text-neutral-300 block mb-1.5">Quote Data Provenance</label>
+            <div className="flex items-center gap-4">
+              <label className="inline-flex items-center gap-1.5 text-neutral-200 cursor-pointer">
+                <input
+                  type="radio"
+                  name="quoteOrigin"
+                  checked={dataSource === 'HA data'}
+                  onChange={() => setDataSource('HA data')}
+                  className="accent-amber-400"
+                />
+                <span>HA data (Hungry Artisan Carrier PDF / Actual Quote)</span>
+              </label>
+              <label className="inline-flex items-center gap-1.5 text-neutral-200 cursor-pointer">
+                <input
+                  type="radio"
+                  name="quoteOrigin"
+                  checked={dataSource === 'demo data'}
+                  onChange={() => setDataSource('demo data')}
+                  className="accent-amber-400"
+                />
+                <span>Demo data (Demonstration / Market Simulation)</span>
+              </label>
+            </div>
+          </div>
+
           {/* Section 1: Forwarder & Route Details */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
             <div>
