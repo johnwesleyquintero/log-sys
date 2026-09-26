@@ -220,9 +220,8 @@ export const SuccessCriteriaChecklist: React.FC<SuccessCriteriaChecklistProps> =
             <span className="text-amber-400 font-mono">{shipment.approval_status.replace('_', ' ').toUpperCase()}</span>
           </div>
           <div className="text-neutral-400">
-            Subject to Hungry Artisan approval rules: Wesley Quintero compiles quote normalization, routing to{' '}
-            <strong className="text-neutral-200">Justin Hopkins</strong> (Founder & CEO - China inbound oversight) or{' '}
-            <strong className="text-neutral-200">Herbert Pamittan</strong> (Logistics Operations Manager - AWD & 3PL execution) for formal sign-off.
+            Subject to Hungry Artisan approval rules: Wesley Quintero compiles quote normalization, manages logistics operations and 3PL replenishment, routing to{' '}
+            <strong className="text-neutral-200">Justin Hopkins</strong> (Founder & CEO - China inbound oversight) or executing sign-off for downstream AWD/3PL distribution.
           </div>
         </div>
       ),

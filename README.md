@@ -1,7 +1,7 @@
 # Hungry Artisan — Multi-Forwarder Quoting & Landed Cost Analysis Decision System
 
-> **Owner:** Wesley Quintero  
-> **Executive Oversight:** Justin Hopkins (Founder & CEO) & Herbert Pamittan (Logistics Operations Manager)  
+> **Owner & Freight Lead:** Wesley Quintero (Logistics Operations & Freight Manager)  
+> **Executive Oversight:** Justin Hopkins (Founder & CEO)  
 > **Status:** Operational Decision Support Interface (v0.1)  
 > **Date:** September 2026  
 
@@ -17,7 +17,7 @@ Provide a single operational decision interface for comparing China $\rightarrow
 - **Side-by-Side Comparison:** Compare quotes apples-to-apples with transparent line-item fee breakdowns.
 - **Exception & Risk Auditing:** Highlight missing components (omitted chassis fees, pier pass, drayage), expired quotes, and unusually high accessorials.
 - **Historical Cost Variance Tracking:** Track quoted vs. actual invoiced freight costs over time to establish negotiating leverage.
-- **Human Approval Governance:** Enforce Hungry Artisan approval workflows (routing to Justin Hopkins or Herbert Pamittan). *The system is strictly decision support; it does NOT automatically book freight.*
+- **Human Approval Governance:** Enforce Hungry Artisan approval workflows (routing to Justin Hopkins or Wesley Quintero). *The system is strictly decision support; it does NOT automatically book freight.*
 
 ---
 
@@ -32,8 +32,8 @@ Hungry Artisan operates across three primary regional fulfillment nodes:
 | **United Kingdom (UK)** | Chinese Supplier via Ocean to Southampton / Felixstowe | **SSD Logistix (3PL Hub)** | Amazon FBA UK (Direct pallet replenishment from Midlands facility) |
 
 ### Key Regional Workflows:
-- **United States Operations:** Bulk inventory is shipped via Amazon AGL directly into Amazon Warehousing and Distribution (AWD). From AWD, stock automatically replenishes Amazon FBA. Multi-channel outbound move requests are manually executed from AWD to supply Walmart Fulfillment Services (WFS) and Fulfilled by TikTok (FBT).
-- **Canada & UK Operations:** Shipments arrive from Chinese suppliers directly at third-party logistics (3PL) warehouses—**Proline Logistics** in Canada and **SSD Logistix** in the UK. Local FBA centers are replenished via LTL/carton shipments dispatched directly from these 3PL facilities.
+- **United States Operations:** Bulk inventory is shipped via Amazon AGL directly into Amazon Warehousing and Distribution (AWD). From AWD, stock automatically replenishes Amazon FBA. Multi-channel outbound move requests are manually executed from AWD by Wesley Quintero to supply Walmart Fulfillment Services (WFS) and Fulfilled by TikTok (FBT).
+- **Canada & UK Operations:** Shipments arrive from Chinese suppliers directly at third-party logistics (3PL) warehouses—**Proline Logistics** in Canada and **SSD Logistix** in the UK. Local FBA centers are replenished via LTL/carton shipments dispatched directly from these 3PL facilities under Wesley Quintero's management.
 
 ---
 
@@ -41,9 +41,8 @@ Hungry Artisan operates across three primary regional fulfillment nodes:
 
 | Name | Role / Organization | Contact Details | Key Responsibilities |
 | :--- | :--- | :--- | :--- |
-| **Justin Hopkins** | Founder & CEO, *Hungry Artisan* | `justin@hungryartisan.com` | Inbound shipments from China, operational oversight, manual transfer approvals. |
-| **Herbert Pamittan** | Logistics Operations Manager, *Hungry Artisan* | `herbert@hungryartisan.com` | AWD transfers, Canada/UK 3PL replenishment execution, weekly reporting, sales monitoring. |
-| **Wesley Quintero** | Freight Operations Specialist & System Owner | `wesley.ecomva@gmail.com` | Forwarder quote collection, normalization math, carrier SLA auditing, routing recommendations. |
+| **Justin Hopkins** | Founder & CEO, *Hungry Artisan* | `justin@hungryartisan.com` | Inbound shipments from China, executive oversight, manual transfer approvals, freight budgeting. |
+| **Wesley Quintero** | Logistics Operations & Freight Manager, *Hungry Artisan* | `wesley.ecomva@gmail.com` | AWD multi-channel transfers (WFS/FBT), Canada & UK 3PL replenishment execution, weekly reporting, sales & stockout monitoring, quote normalization, and carrier SLA routing recommendations. |
 | **Bert Abedirad** | Director / VP, *Proline Logistics Services (Canada)* | `info@prolinelogistics.ca`<br>`(604) 500-2055` | Canada 3PL warehousing, carton/pallet labeling, LTL freight dispatch to Amazon YHM1. |
 | **Matt Terry** | Warehouse Manager, *SSD Logistix (UK)* | `office@ssdlogistix.com`<br>`01789 777 905` | UK 3PL warehouse management, customs receipt, and UK FBA shipment processing. |
 | **Jules** | WebBee / Integration Specialist | *Internal Slack* | Multi-channel integration support (Map My Channel / WebBee). |
@@ -81,7 +80,7 @@ Hungry Artisan operates across three primary regional fulfillment nodes:
                                 │
                          Human Decision
                                 │
-                   Justin Hopkins / Herbert Pamittan
+                   Justin Hopkins / Wesley Quintero
 ```
 
 - **React App:** Serves as the decision support interface (quote entry, normalization, comparison, variance tracking). *React is NOT the source of truth.*

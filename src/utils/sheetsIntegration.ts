@@ -3,8 +3,8 @@ import { Forwarder, Shipment, Quote, HistoricalShipment, RateCard } from '../typ
 export const APPS_SCRIPT_SAMPLE_CODE = `/**
  * Google Apps Script - Hungry Artisan Freight Quoting & Cost Service
  * Service Layer between Google Sheets (Operational DB) and React Decision Interface
- * Owner: Wesley Quintero (Hungry Artisan)
- * Executive Leads: Justin Hopkins (CEO) & Herbert Pamittan (Logistics Ops)
+ * Owner: Wesley Quintero (Hungry Artisan - Logistics Operations & Freight Manager)
+ * Executive Leads: Justin Hopkins (CEO) & Wesley Quintero (Logistics Ops)
  */
 
 const SPREADSHEET_ID = SpreadsheetApp.getActiveSpreadsheet().getId();

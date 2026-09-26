@@ -340,7 +340,7 @@ export default function App() {
           <div className="flex items-center gap-4 text-neutral-400">
             <span>Operational DB: Google Sheets</span>
             <span>·</span>
-            <span>Sign-off: Justin Hopkins & Herbert Pamittan</span>
+            <span>Sign-off: Justin Hopkins & Wesley Quintero</span>
           </div>
         </div>
       </footer>

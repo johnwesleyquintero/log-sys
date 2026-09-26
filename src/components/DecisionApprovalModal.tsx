@@ -30,7 +30,7 @@ export const DecisionApprovalModal: React.FC<DecisionApprovalModalProps> = ({
   const [selectedForwarderId, setSelectedForwarderId] = useState<string>(
     shipment.selected_forwarder_id || shipmentQuotes[0]?.forwarder_id || '',
   );
-  const [approver, setApprover] = useState<'Justin Hopkins' | 'Herbert Pamittan' | 'Wesley Quintero'>('Justin Hopkins');
+  const [approver, setApprover] = useState<'Justin Hopkins' | 'Wesley Quintero'>('Justin Hopkins');
   const [approvalStatus, setApprovalStatus] = useState<Shipment['approval_status']>(
     shipment.approval_status === 'not_submitted' ? 'approved' : shipment.approval_status,
   );
@@ -98,7 +98,7 @@ export const DecisionApprovalModal: React.FC<DecisionApprovalModalProps> = ({
         <div className="p-3 bg-amber-950/30 border border-amber-800/60 rounded text-xs text-amber-200/90 flex items-start gap-2">
           <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
           <div>
-            <strong>Operational Governance:</strong> The system acts as decision support and does not execute automatic bookings. Sign-off is held by Justin Hopkins (Inbound & China oversight) and Herbert Pamittan (AWD & 3PL replenishment execution).
+            <strong>Operational Governance:</strong> The system acts as decision support and does not execute automatic bookings. Sign-off is held by Justin Hopkins (Founder & CEO - Inbound & China oversight) and Wesley Quintero (Logistics Operations & Freight Management).
           </div>
         </div>
 
@@ -165,8 +165,7 @@ export const DecisionApprovalModal: React.FC<DecisionApprovalModalProps> = ({
                 className="w-full bg-neutral-950 border border-neutral-700 rounded p-2 text-xs text-neutral-200 focus:outline-none focus:border-amber-400"
               >
                 <option value="Justin Hopkins">Justin Hopkins (Founder & CEO)</option>
-                <option value="Herbert Pamittan">Herbert Pamittan (Logistics Operations Manager)</option>
-                <option value="Wesley Quintero">Wesley Quintero (Freight Operations Specialist)</option>
+                <option value="Wesley Quintero">Wesley Quintero (Logistics Operations & Freight Manager)</option>
               </select>
             </div>
 
@@ -181,7 +180,7 @@ export const DecisionApprovalModal: React.FC<DecisionApprovalModalProps> = ({
               >
                 <option value="approved">Approve Routing Selection</option>
                 <option value="pending_justin">Route to Justin Hopkins for Sign-off</option>
-                <option value="pending_herbert">Route to Herbert Pamittan for Execution</option>
+                <option value="pending_wesley">Route to Wesley Quintero for Execution</option>
                 <option value="rejected">Reject / Request Forwarder Re-quote</option>
               </select>
             </div>

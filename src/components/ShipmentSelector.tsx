@@ -56,11 +56,12 @@ export const ShipmentSelector: React.FC<ShipmentSelectorProps> = ({
             <span>Pending Justin Hopkins (CEO)</span>
           </div>
         );
+      case 'pending_wesley':
       case 'pending_herbert':
         return (
           <div className="flex items-center gap-1.5 text-xs text-amber-400 font-medium">
             <Clock className="w-3.5 h-3.5 text-amber-400" />
-            <span>Pending Herbert Pamittan (Logistics Ops)</span>
+            <span>Pending Wesley Quintero (Logistics Ops)</span>
           </div>
         );
       case 'rejected':

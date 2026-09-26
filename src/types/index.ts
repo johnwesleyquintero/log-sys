@@ -98,7 +98,7 @@ export interface Shipment {
   target_delivery_date: string;
   product_unit_fob_cost: number; // USD per unit for landed cost calculation
   status: 'draft' | 'quoting' | 'comparing' | 'approved' | 'in_transit' | 'completed';
-  approval_status: 'not_submitted' | 'pending_justin' | 'pending_herbert' | 'approved' | 'rejected';
+  approval_status: 'not_submitted' | 'pending_justin' | 'pending_wesley' | 'pending_herbert' | 'approved' | 'rejected';
   selected_forwarder_id?: string;
   approval_notes?: string;
   approved_by?: string;
